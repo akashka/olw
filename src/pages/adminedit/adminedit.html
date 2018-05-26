@@ -1,0 +1,242 @@
+<ion-header>
+ <ion-navbar color="secondary">
+  <ion-buttons left>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+  </ion-buttons>
+  <ion-title>
+    EDIT (ADMIN)
+  </ion-title>
+  <!-- <ion-buttons end>
+    <button ion-button icon-only (click)="add()"><ion-icon name="add-circle"></ion-icon></button>
+  </ion-buttons> -->
+ </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list *ngIf="showListing">
+
+    <div class="search-row search-full">
+        <ion-searchbar
+            [(ngModel)]="myInput"
+            (animated)="true"
+            (placeholder)="Search"
+            (ionInput)="search()"
+        ></ion-searchbar>
+    </div>
+ 
+    <img src="assets/images/emoji-faces.jpg" class="emozi" *ngIf="students && !students.length" />
+    <h1 *ngIf="students && !students.length" class="no_record"> NO RECORDS FOUND </h1>
+
+    <ion-item-sliding *ngFor="let student of students" class="results_list_mobile">
+     
+        <button ion-item>
+          <div class="col_left">
+            <div *ngIf="student.photo"><img src={{student.photo}} class="bg_student"/></div>
+            <div *ngIf="!student.photo"><img src="assets/images/NoImageAvailable.png" class="bg_student"/></div>
+          </div>
+          <div class="col_right">
+            <h1>{{student.name}}</h1>
+            <h3 *ngIf="student.gender === 'Male'"> S/O {{student.parent_name}}</h3>
+            <h3 *ngIf="student.gender !== 'Male'"> D/O {{student.parent_name}}</h3>
+            <h2><ion-icon name="mail"></ion-icon> {{student.email_id}}</h2>
+            <a (click)="callNumber(student.phone_number)"><ion-icon name="call"></ion-icon> {{student.phone_number}} </a>
+            <!-- <h2><ion-icon name="call"></ion-icon> {{student.alternate_contact}}</h2> -->
+            <h2><ion-icon name="locate"></ion-icon> {{student.locality}}</h2>
+            <h2><ion-icon name="clock"></ion-icon> {{student.dob | date: 'dd/MMM/yyyy'}} </h2>
+            <h2>{{student.class_group}} ({{student.study_year}})</h2>
+          </div>
+        </button>
+     
+        <ion-item-options side="right">
+          <button ion-button color="warning" (click)="edit(student)">
+            <ion-icon name="create"></ion-icon>
+            Edit
+          </button>
+          <button ion-button color="danger" (click)="delete(student)">
+            <ion-icon name="trash"></ion-icon>
+            Delete
+          </button>
+        </ion-item-options>
+
+        <ion-item-options side="left">
+          <button ion-button color="secondary" (click)="callNumber(student.phone_number)">
+            <ion-icon name="call"></ion-icon>
+            Contact
+          </button>
+        </ion-item-options>
+
+    </ion-item-sliding>
+
+  </ion-list>
+
+
+  <ion-list no-lines *ngIf="!showListing">
+
+      <form [formGroup]="studentForm">
+ 
+        <!-- Name of the student -->
+        <ion-item>
+            <ion-label floating><ion-icon name="people"></ion-icon> Name*</ion-label>
+            <ion-input type="text" formControlName="name"></ion-input>
+        </ion-item>
+        <p class="errorMessage" *ngIf="!studentForm.controls.name.valid  && (studentForm.controls.name.dirty || submitAttempt)">
+          Please enter a valid name
+        </p>
+
+        <!-- Gender of the student -->
+        <ion-list radio-group formControlName="gender">
+          <ion-list-header> <ion-icon name="transgender"></ion-icon> Gender* </ion-list-header>
+          <ion-item>
+            <ion-label>Male</ion-label>
+            <ion-radio value="Male"></ion-radio>
+          </ion-item>
+          <ion-item>
+            <ion-label>Female</ion-label>
+            <ion-radio value="Female"></ion-radio>
+          </ion-item>
+        </ion-list>
+        <p class="errorMessage" *ngIf="!studentForm.controls.gender.valid  && (studentForm.controls.gender.dirty || submitAttempt)">
+          Please select Gender
+        </p>
+
+        <!-- DOB of the student -->
+        <ion-item>
+          <ion-label floating><ion-icon name="clock"></ion-icon> DOB*</ion-label>
+          <ion-datetime displayFormat="DD/MMM/YYYY" (ionChange)="onDobChange()" pickerFormat="DD MMM YYYY" formControlName="dob"></ion-datetime>
+        </ion-item>
+        <p class="errorMessage" *ngIf="!studentForm.controls.dob.valid  && (studentForm.controls.dob.dirty || submitAttempt)">
+          Please select valid date
+        </p>
+
+        <!-- Name of the Parent -->
+        <ion-item>
+            <ion-label floating><ion-icon name="people"></ion-icon> Parent Name*</ion-label>
+            <ion-input type="text" formControlName="parent_name"></ion-input>
+        </ion-item>
+        <p class="errorMessage" *ngIf="!studentForm.controls.parent_name.valid  && (studentForm.controls.parent_name.dirty || submitAttempt)">
+          Please enter a valid name
+        </p>
+ 
+        <!-- Phone no of the Parent  -->
+        <ion-item>
+            <ion-label floating><ion-icon name="call"></ion-icon> Phone No*</ion-label>
+            <ion-input type="text" (ionChange)="onPhoneChange()"formControlName="phone_number"></ion-input>
+        </ion-item>
+        <p class="errorMessage" *ngIf="!studentForm.controls.phone_number.valid  && (studentForm.controls.phone_number.dirty || submitAttempt)">
+          Please enter a valid Phone No.
+        </p>
+
+        <!-- Alternate Contact of the Parent  -->
+        <ion-item>
+            <ion-label floating><ion-icon name="call"></ion-icon> Alternate Contact</ion-label>
+            <ion-input type="text" (ionChange)="onPhoneChange()" formControlName="alternate_contact"></ion-input>
+        </ion-item>
+        <p class="errorMessage" *ngIf="!studentForm.controls.alternate_contact.valid  && (studentForm.controls.alternate_contact.dirty || submitAttempt)">
+          Please enter a valid alternate No.
+        </p>
+
+        <!-- Locality of the Parent  -->
+        <ion-item>
+            <ion-label floating><ion-icon name="locate"></ion-icon> Locality*</ion-label>
+            <ion-input type="text" formControlName="locality"></ion-input>
+        </ion-item>
+        <p class="errorMessage" *ngIf="!studentForm.controls.locality.valid  && (studentForm.controls.locality.dirty || submitAttempt)">
+          Please enter a valid locality
+        </p>
+ 
+        <!-- Study Year of the student -->
+        <ion-item>
+            <ion-label floating><ion-icon name="bookmarks"></ion-icon> Study Year*</ion-label>
+            <ion-select formControlName="study_year" interface="popover" (ionChange)="onYearChange()">
+              <ion-option value="2016-17">May 2016 - April 2017</ion-option>
+              <ion-option value="2017-18">May 2017 - April 2018</ion-option>
+              <ion-option value="2018-19">May 2018 - April 2019</ion-option>
+              <ion-option value="2019-20">May 2019 - April 2020</ion-option>
+              <ion-option value="2020-21">May 2020 - April 2021</ion-option>
+            </ion-select>
+        </ion-item>
+        <p class="errorMessage" *ngIf="!studentForm.controls.study_year.valid  && (studentForm.controls.study_year.dirty || submitAttempt)">
+          Please select Class Group
+        </p>
+
+        <!-- Class of the student -->
+        <ion-item>
+            <ion-label floating><ion-icon name="office"></ion-icon> Class*</ion-label>
+            <ion-select formControlName="class_group" interface="popover">
+              <ion-option value="Play Group">Play Group</ion-option>
+              <ion-option value="Nursery">Nursery</ion-option>
+              <ion-option value="LKG">LKG</ion-option>
+              <ion-option value="UKG">UKG</ion-option>
+            </ion-select>
+        </ion-item>
+        <p class="errorMessage" *ngIf="!studentForm.controls.class_group.valid  && (studentForm.controls.class_group.dirty || submitAttempt)">
+          Please select Class Group
+        </p>
+
+        <!-- class_type of the student -->
+        <ion-item>
+            <ion-label floating><ion-icon name="office"></ion-icon> Type*</ion-label>
+            <ion-select formControlName="class_type" interface="popover">
+              <ion-option value="Annual">Annual</ion-option>
+              <ion-option value="Mid-term">Mid-term</ion-option>
+              <ion-option value="Early start">Early start</ion-option>
+            </ion-select>
+        </ion-item>
+        <p class="errorMessage" *ngIf="!studentForm.controls.class_type.valid  && (studentForm.controls.class_type.dirty || submitAttempt)">
+          Please select Class Group
+        </p>
+
+        <!-- uniform_size of the student -->
+        <ion-item>
+            <ion-label floating><ion-icon name="clothes"></ion-icon> Uniform Size*</ion-label>
+            <ion-select formControlName="uniform_size" interface="popover">
+              <ion-option value="">NA</ion-option>
+              <ion-option value="18">18</ion-option>
+              <ion-option value="20">20</ion-option>
+              <ion-option value="22">22</ion-option>
+              <ion-option value="24">24</ion-option>
+              <ion-option value="26">26</ion-option>
+              <ion-option value="28">28</ion-option>
+              <ion-option value="30">30</ion-option>
+              <ion-option value="32">32</ion-option>
+            </ion-select>
+        </ion-item>
+        <p class="errorMessage" *ngIf="!studentForm.controls.uniform_size.valid  && (studentForm.controls.uniform_size.dirty || submitAttempt)">
+          Please select Uniform Size
+        </p>
+
+        <!-- shoe_size of the student -->
+        <ion-item>
+            <ion-label floating><ion-icon name="shoe"></ion-icon> Shoe Size*</ion-label>
+            <ion-select formControlName="shoe_size" interface="popover">
+              <ion-option value="">NA</ion-option>
+              <ion-option value="6">6</ion-option>
+              <ion-option value="7">7</ion-option>
+              <ion-option value="8">8</ion-option>
+              <ion-option value="9">9</ion-option>
+              <ion-option value="10">10</ion-option>
+              <ion-option value="11">11</ion-option>
+              <ion-option value="12">12</ion-option>
+              <ion-option value="13">13</ion-option>
+            </ion-select>
+        </ion-item>
+        <p class="errorMessage" *ngIf="!studentForm.controls.shoe_size.valid  && (studentForm.controls.shoe_size.dirty || submitAttempt)">
+          Please select Shoe Size
+        </p>
+
+        <br><br><br><br>
+
+      </form>
+ 
+  </ion-list>
+
+  <div class="gm_drawer_footer_wrapper" *ngIf="!showListing">
+    <button (click)="goBack()" ion-button class="btn-danger">Cancel</button>
+    <button (click)="confirmStudent()" ion-button class="btn-success">Submit</button>
+  </div>
+
+
+</ion-content>

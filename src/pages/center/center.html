@@ -1,0 +1,146 @@
+<ion-header>
+  <ion-navbar color="secondary">
+    <ion-buttons left>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+  	<ion-buttons start>
+		  <button ion-button icon-only (click)="openHomePage()"><ion-icon name="close"></ion-icon></button>
+  	</ion-buttons>
+    <ion-title>Centers</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <div class="search-row">
+      	<ion-searchbar
+      		  [(ngModel)]="myInput"
+      		  (animated)="true"
+      		  (placeholder)="Search"
+      		  (ionInput)="search()">
+      	</ion-searchbar>
+        <ion-select interface="popover" [(ngModel)]="mySelect" (ionChange)="onSelectChange()" class="search-ic">
+          <ion-option *ngFor="let center of centers" [value]="center.center_name">{{center.center_name}}</ion-option>
+        </ion-select>
+    </div>
+
+    <ion-row class="account-form">
+        <ion-col>
+            <ion-list inset>
+ 
+                <ion-item>
+                    <ion-label><ion-icon name="paper-plane"></ion-icon></ion-label>
+                    <ion-input [(ngModel)]="center_name" (ionChange)="generateCode()" placeholder="Center Name" required type="string"></ion-input>
+                </ion-item>
+ 
+                <ion-item>
+                    <h3> Center Code: {{ center_code }} </h3>
+                </ion-item>
+ 
+               <ion-item>
+                    <ion-label><ion-icon name="call"></ion-icon></ion-label>
+                    <ion-input [(ngModel)]="center_phoneno" placeholder="Center Phone No" required type="string"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label><ion-icon name="mail"></ion-icon></ion-label>
+                    <ion-input [(ngModel)]="center_email" placeholder="Center E-Mail" (ionChange)="onEmailChange()" required type="string"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label><ion-icon name="locate"></ion-icon></ion-label>
+                    <ion-input [(ngModel)]="center_address" placeholder="Center Address" required type="string"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label>Active</ion-label>
+                  <ion-toggle [(ngModel)]="active" checked="true" class="toggle-large"></ion-toggle>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label>Cash</ion-label>
+                  <ion-toggle [(ngModel)]="cash" checked="false" class="toggle-large"></ion-toggle>
+                </ion-item>
+
+
+                <h4> Playgroup</h4>
+
+                <ion-item>
+                  <ion-label color="primary">Annual</ion-label>
+                  <ion-input type="number" placeholder="Enter Number" [(ngModel)]="playgroup.annual" required></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label color="primary">Mid-term</ion-label>
+                  <ion-input type="number" placeholder="Enter Number" [(ngModel)]="playgroup.mid_term" required></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label color="primary">Early start</ion-label>
+                  <ion-input type="number" placeholder="Enter Number" [(ngModel)]="playgroup.early_start" required></ion-input>
+                </ion-item>
+
+
+                <h4> Nursery</h4>
+
+                <ion-item>
+                  <ion-label color="primary">Annual</ion-label>
+                  <ion-input type="number" placeholder="Enter Number" [(ngModel)]="nursery.annual" required></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label color="primary">Mid-term</ion-label>
+                  <ion-input type="number" placeholder="Enter Number" [(ngModel)]="nursery.mid_term" required></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label color="primary">Early start</ion-label>
+                  <ion-input type="number" placeholder="Enter Number" [(ngModel)]="nursery.early_start" required></ion-input>
+                </ion-item>
+
+
+                <h4> LKG</h4>
+
+                <ion-item>
+                  <ion-label color="primary">Annual</ion-label>
+                  <ion-input type="number" placeholder="Enter Number" [(ngModel)]="lkg.annual" required></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label color="primary">Mid-term</ion-label>
+                  <ion-input type="number" placeholder="Enter Number" [(ngModel)]="lkg.mid_term" required></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label color="primary">Early start</ion-label>
+                  <ion-input type="number" placeholder="Enter Number" [(ngModel)]="lkg.early_start" required></ion-input>
+                </ion-item>
+
+
+                <h4> UKG</h4>
+
+                <ion-item>
+                  <ion-label color="primary">Annual</ion-label>
+                  <ion-input type="number" placeholder="Enter Number" [(ngModel)]="ukg.annual" required></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label color="primary">Mid-term</ion-label>
+                  <ion-input type="number" placeholder="Enter Number" [(ngModel)]="ukg.mid_term" required></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label color="primary">Early start</ion-label>
+                  <ion-input type="number" placeholder="Enter Number" [(ngModel)]="ukg.early_start" required></ion-input>
+                </ion-item>
+
+            </ion-list>
+ 
+            <button ion-button (click)="save()" *ngIf="btnText == 'Save'" class="continue-button">{{ btnText }}</button>
+            <button ion-button (click)="update()" *ngIf="btnText != 'Save'" class="continue-button">{{ btnText }}</button>
+ 
+        </ion-col>
+    </ion-row>
+ 
+</ion-content>

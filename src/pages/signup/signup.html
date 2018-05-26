@@ -1,0 +1,104 @@
+ <ion-header>
+  <ion-navbar color="secondary">
+    <ion-buttons left>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons start>
+        <button ion-button icon-only (click)="openHomePage()"><ion-icon name="close"></ion-icon></button>
+    </ion-buttons>
+    <ion-title>Users</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+    <div class="search-row">
+        <ion-searchbar
+            [(ngModel)]="myInput"
+            (animated)="true"
+            (placeholder)="Search"
+            (ionInput)="search()">
+        </ion-searchbar>
+        <ion-select interface="popover" [(ngModel)]="mySelect" (ionChange)="onSelectChange()" class="search-ic">
+          <ion-option *ngFor="let user of users" [value]="user.name">{{user.name}}</ion-option>
+        </ion-select>
+    </div>
+ 
+    <ion-row class="account-form">
+        <ion-col>
+            <ion-list inset>
+
+                <ion-item *ngIf="!existingUser">
+                  <ion-label>Center</ion-label>
+                  <ion-select interface="popover" [(ngModel)]="center">
+                    <ion-option *ngFor="let cen of centers" [value]="cen.center_code"> {{cen.center_name}} </ion-option>
+                  </ion-select>
+                </ion-item>
+
+                <ion-item *ngIf="existingUser">
+                  <ion-label>Center</ion-label>
+                  <ion-input [(ngModel)]="center" [readonly]=true placeholder="Center" type="text"></ion-input>
+                </ion-item>
+ 
+                <ion-item *ngIf="!existingUser">
+                    <ion-label><ion-icon name="mail"></ion-icon></ion-label>
+                    <ion-input [(ngModel)]="email" (ionChange)="onEmailChange()" (ionChange)="checkEmail()" required placeholder="Email" type="email"></ion-input>
+                </ion-item>
+
+                <ion-item *ngIf="existingUser">
+                    <ion-label><ion-icon name="mail"></ion-icon></ion-label>
+                    <ion-input [(ngModel)]="email" [readonly]=true placeholder="Email" type="email"></ion-input>
+                </ion-item>
+
+                <p class="error-message" *ngIf="isExisting">Email already exists</p>
+
+                <ion-item>
+                    <ion-label><ion-icon name="lock"></ion-icon></ion-label>
+                    <ion-input [(ngModel)]="password" (ionChange)="checkPassword()" placeholder="Password" type="password"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label><ion-icon name="lock"></ion-icon></ion-label>
+                    <ion-input [(ngModel)]="confirm_password" placeholder="Confirm Password" (ionChange)="checkPassword()" type="password"></ion-input>
+                </ion-item>
+
+                <p class="error-message" *ngIf="!isPasswordMatching">Password do not match</p>
+
+                <ion-item>
+                    <ion-label><ion-icon name="person-add"></ion-icon></ion-label>
+                    <ion-input [(ngModel)]="name" placeholder="Name"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label>Active</ion-label>
+                    <ion-toggle [(ngModel)]="active" checked="true" class="toggle-large"></ion-toggle>
+                </ion-item>
+ 
+                <ion-list radio-group [(ngModel)]="role">
+                  <ion-item>
+                    <ion-label>Center</ion-label>
+                    <ion-radio value="counsellor" checked></ion-radio>
+                  </ion-item>
+                  <ion-item>
+                    <ion-label>Dispatcher</ion-label>
+                    <ion-radio value="dispatcher"></ion-radio>
+                  </ion-item>
+                  <ion-item>
+                    <ion-label>Admin</ion-label>
+                    <ion-radio value="admin"></ion-radio>
+                  </ion-item>
+                </ion-list>
+ 
+            </ion-list>
+ 
+            <button ion-button (click)="delete()" *ngIf="isUserDeletable" class="delete-button">Delete User</button>
+
+            <button ion-button (click)="save()" *ngIf="btnText == 'Save'" class="continue-button">{{ btnText }}</button>
+            <button ion-button (click)="update()" *ngIf="btnText != 'Save'" class="continue-button">{{ btnText }}</button>
+        
+        </ion-col>
+    </ion-row>
+
+</ion-content>

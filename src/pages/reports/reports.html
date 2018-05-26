@@ -1,0 +1,83 @@
+<ion-header>
+ <ion-navbar color="secondary">
+  <ion-buttons left>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+  </ion-buttons>
+  <ion-title>
+    Reports
+  </ion-title>
+  <ion-buttons end>
+    <button ion-button icon-only (click)="close()"><ion-icon name="close"></ion-icon></button>
+  </ion-buttons>
+ </ion-navbar>
+</ion-header>
+ 
+<ion-content>
+
+	  <div class="button-bar">
+        <a class="button {{buttonStyleToday}}" (click)="searchToday()">Day</a>
+        <a class="button {{buttonStyleWeek}}" (click)="searchWeek()">Week</a>
+        <a class="button {{buttonStyleMonth}}" (click)="searchMonth()">Month</a>
+        <a class="button {{buttonStyleRange}}" (click)="dateRange()">Dates</a>
+    </div>
+
+    <div class="button-bar">
+        <a class="button button-energized {{btn_enq}}" (click)="setEnquiry()">Enq.</a>
+        <a class="button button-assertive {{btn_astv}}" (click)="setConfirmed()">Conf.</a>
+        <a class="button button-positive {{btn_indt}}" (click)="setIndented()">Ind.</a>
+        <a class="button button-simple {{btn_all}}" (click)="setAll()">All</a>
+    </div>
+
+    <div class="filters" *ngIf="showFilters">
+        <ion-select interface="popover" placeholder="Select Center" [(ngModel)]="selectedCenter" class="search-ic search-user">
+          <ion-option *ngFor="let center of centers" [value]="center">{{center}}</ion-option>
+        </ion-select>
+
+        <ion-select interface="popover" placeholder="Select User" [(ngModel)]="selectedUser" class="search-ic search-user">
+          <ion-option *ngFor="let user of users" [value]="user">{{user}}</ion-option>
+        </ion-select>
+
+        <button (click)="searchFilter()" ion-button class="btn-info clear-btn" style="width:21%">Search</button>
+        <button (click)="clearFilter()" ion-button class="btn-danger clear-btn" style="width:16%; margin-right: 1%;">clear</button>
+    </div>
+
+  <ion-list>
+ 
+    <img src="assets/images/emoji-faces.jpg" class="emozi" *ngIf="reports && !reports.length" />
+    <h1 *ngIf="reports && !reports.length" class="no_record"> NO RECORDS FOUND </h1>
+
+    <p *ngIf="reports && reports.length" class="result-number"> {{reports.length}} {{searchType}} results found for {{startDate | date: 'dd/MMM/yyyy'}} - {{endDate | date: 'dd/MMM/yyyy'}}</p>
+
+  	<table class="rwd-table">
+  	  <tr>
+  	    <th>Center</th>
+  	    <th>Name</th>
+  	    <th>Parent</th>
+  	    <th>Phone</th>
+  	    <th>DOB</th>
+  	    <th>Email</th>
+  	    <th>Gender</th>
+        <th>Class</th>
+  	    <th>Year</th>
+  	  </tr>
+  	  <tr *ngFor="let report of reports" class="{{report.status}}">
+  	    <td data-th="Center">{{findCenter(report.center)}}</td>
+  	    <td data-th="Name">{{report.name}}</td>
+  	    <td data-th="Parent">{{report.parent_name}}</td>
+  	    <td data-th="Phone">{{report.phone_number}}</td>
+  	    <td data-th="DOB">{{report.dob | date: 'dd/MMM/yyyy'}}</td>
+  	    <td data-th="Email">{{report.email_id}}</td>
+  	    <td data-th="Gender">{{report.gender}}</td>
+        <td data-th="Year">{{report.study_year}}</td>
+  	  </tr>
+  	</table>
+
+    <div class="gm_drawer_footer_wrapper" *ngIf="reports && reports.length">
+      <button (click)="downloadReport()" ion-button class="btn-info">Download</button>
+      <button (click)="mailReport()" ion-button class="btn-info">Send Mail</button>
+    </div>
+
+  </ion-list>
+</ion-content>

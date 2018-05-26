@@ -1,0 +1,133 @@
+<ion-header>
+ <ion-navbar color="secondary">
+  <ion-buttons left>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+  </ion-buttons>
+  <ion-title>
+    SPARK
+  </ion-title>
+  <ion-buttons end>
+    <button ion-button icon-only (click)="add()"><ion-icon name="close"></ion-icon></button>
+  </ion-buttons>
+ </ion-navbar>
+</ion-header>
+ 
+<ion-content>
+
+  <div class="search-row search-full" *ngIf="!confirm_indent">
+      <ion-searchbar
+          [(ngModel)]="myInput"
+          (animated)="true"
+          (placeholder)="Search"
+          (ionInput)="search()"
+      ></ion-searchbar>
+  </div>
+
+  <img src="assets/images/emoji-faces.jpg" class="emozi" *ngIf="!confirm_indent && students && !students.length" />
+  <h1 *ngIf="!confirm_indent && students && !students.length" class="no_record"> NO RECORDS FOUND </h1>
+
+  <ion-list *ngIf="!confirm_indent && students && students.length">
+ 
+    <ion-item-sliding *ngFor="let student of students" class="results_list_mobile indent_results" style="height:100%;">
+     
+        <button ion-item>
+          <div class="col_left indent_left">
+            <div *ngIf="student.photo"><img src={{student.photo}} class="bg_student indent_student"/></div>
+            <div *ngIf="!student.photo"><img src="assets/images/NoImageAvailable.png" class="bg_student indent_student"/></div>
+            <br/>
+            <h2 *ngIf="student.study_year != '2018-19'" style="color: red;"> You cannot indent this, admission is not for 2018-19 </h2>
+          </div>
+          <div class="col_right indent_right">
+            <h1>{{student.name}}</h1>
+            <h3 *ngIf="student.gender === 'Male'"> S/O {{student.parent_name}}</h3>
+            <h3 *ngIf="student.gender !== 'Male'"> D/O {{student.parent_name}}</h3>
+            <h2>{{student.class_group}}</h2>
+            <h2><ion-icon name="clock"></ion-icon> {{student.confirmation_date | date: 'dd/MMM/yyyy'}} </h2>
+            <h2><ion-icon name="book"></ion-icon> {{student.study_year}} </h2>
+          </div>
+        </button>
+     
+        <ion-item-options side="right" *ngIf="student.study_year == '2018-19'">
+          <button ion-button color="info" (click)="indent(student)" *ngIf="!student.indented">
+            <ion-icon name="redo"></ion-icon>
+            Indent
+          </button>
+          <button ion-button color="danger" (click)="unindent(student)" *ngIf="student.indented">
+            <ion-icon name="undo"></ion-icon>
+            UnIndent
+          </button>
+        </ion-item-options>
+
+        <ion-item-options side="left">
+          <button ion-button color="secondary" (click)="callNumber(student.phone_number)">
+            <ion-icon name="call"></ion-icon>
+            Contact
+          </button>
+        </ion-item-options>
+    </ion-item-sliding>
+
+    <div class="gm_drawer_footer_wrapper">
+      <div class="amt_button">
+        <p class="total_left"> 
+            <em> &#8377; {{ total_amount }} </em>
+            <br/>
+            <span *ngIf="indented_students && indented_students.length"> {{ indented_students.length }} Students </span>
+        </p>
+      </div>
+      <button (click)="indentStudents()" [disabled]="!indented_students || !indented_students.length" ion-button class="btn-success">Indent</button>
+    </div>
+
+  </ion-list>
+
+  <ion-list *ngIf="confirm_indent">
+
+    <div class="button-bar" *ngIf="isCash">
+        <a class="button button-positive button-indent" (click)="setCash()">Cash</a>
+        <a class="button button-positive button-indent" (click)="setCheque()">Cheque</a>
+        <a class="button button-positive button-indent" (click)="setOnline()">Online</a>
+    </div>
+
+    <div class="button-bar" *ngIf="!isCash">
+        <a class="button button-positive button-half" (click)="setCheque()">Cheque</a>
+        <a class="button button-positive button-half" (click)="setOnline()">Online</a>
+    </div>
+
+    <ion-list inset>
+
+        <ion-item>
+            <h3> Amount: {{ total_amount }} </h3>
+        </ion-item>
+
+        <ion-item>
+            <ion-label><ion-icon name="calendar"></ion-icon></ion-label>
+            <ion-datetime [(ngModel)]="payment_date" placeholder="Date of Payment" required displayFormat="DD/MMM/YYYY" ></ion-datetime>
+        </ion-item>
+ 
+        <ion-item *ngIf="payment_mode != 'cash'">
+            <ion-label><ion-icon name="home"></ion-icon></ion-label>
+            <ion-input [(ngModel)]="bank_name" placeholder="Name of the bank" type="string"></ion-input>
+        </ion-item>
+
+        <ion-item *ngIf="payment_mode == 'online'">
+            <ion-label><ion-icon name="card"></ion-icon></ion-label>
+            <ion-input [(ngModel)]="transaction_no" placeholder="Transaction No." type="string"></ion-input>
+        </ion-item>
+
+        <ion-item *ngIf="payment_mode == 'cheque'">
+            <ion-label><ion-icon name="card"></ion-icon></ion-label>
+            <ion-input [(ngModel)]="cheque_no" placeholder="Cheque No." type="string"></ion-input>
+        </ion-item>
+
+    </ion-list>
+
+
+    <div class="gm_drawer_footer_wrapper">
+      <button (click)="indentStudents()" ion-button class="btn-danger">Go Back</button>
+      <button (click)="confirmIndent()" ion-button class="btn-success">Confirm</button>
+    </div>
+
+  </ion-list>
+
+</ion-content>

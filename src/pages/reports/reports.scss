@@ -1,0 +1,268 @@
+page-reports {
+
+	.button-bar {
+		display: table;
+    width: 100%;
+	}
+
+	.button {
+		background-color: #e7e7e7;
+	    border: none;
+	    color: black;
+	    padding: 15px;
+	    text-align: center;
+	    text-decoration: none;
+	    display: inline-block;
+	    font-size: 16px;
+	    width: 25%;
+	}
+
+	.button-positive {
+		background-color: #4CAF50;
+	    color: white;
+        padding: 15px 28px;
+	}
+
+	.button-assertive {
+		background-color: #008CBA;
+	    color: white;
+	}
+
+	.button-energized {
+		background-color: #f44336;
+	    color: white;
+	}
+
+	.button-simple {
+		background-color: #009688;
+	    color: white;
+	}
+
+  .button-optioni {
+    background:olive;
+    color: white;
+  }  
+
+	.button-option:active {
+		background:olive;
+		color: white;
+	}
+
+	.button-option:focus {
+		background:olive;
+		color: white;
+	}
+
+	.button-option:visited {
+		background:olive;
+		color: white;
+	}
+
+  .button-active {
+    background:olive;
+    color: white;
+  }
+
+	.gm_drawer_footer_wrapper {
+        width: 100%;
+        height: 50px;
+        position: fixed;
+        background: #fff;
+        bottom: 0;
+        z-index: 1;
+        box-shadow: 0 0 16px 0 rgba(0,0,0,.3);
+    }
+
+    .btn-danger {
+        color: white;
+        padding: 14px 20px;
+        background-color: #f44336;
+        margin: 8px 0;
+        border: none;
+        cursor: pointer;
+        float:left;
+        width:50%;
+        height: 80%;
+    }
+
+    .btn-success {
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        cursor: pointer;
+        float:left;
+        width:50%;
+        height: 80%;
+    }
+
+    .btn-info {
+        background-color: #008CBA;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        cursor: pointer;
+        float:left;
+        width:50%;
+        height: 80%;
+    }
+
+    .result-number {
+	    font-size: 0.89em;
+	    text-transform: uppercase;
+	    font-weight: bolder;
+	    color: orangered;
+    }
+
+    .confirmed {
+    	background: #008CBA;
+    }
+
+    .enquiry {
+    	background: #f44336;
+    }
+
+    .indented {
+    	background: #4CAF50;
+    }
+
+}
+
+.days-btn p {
+	color: #444444;
+}
+
+.title-md .toolbar-title-md {
+	color: white;
+}
+
+.bar-buttons-md .bar-button-clear-md {
+	color: white;
+}
+
+$breakpoint-alpha: 480px; // adjust to your needs
+
+.rwd-table {
+  margin: 1em 0;
+  min-width: 300px; // adjust to your needs
+  
+  tr {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  th {
+    display: none; // for accessibility, use a visually hidden method here instead! Thanks, reddit!   
+  }
+  
+  td {
+    display: block; 
+    
+    &:first-child {
+      padding-top: .5em;
+    }
+    &:last-child {
+      padding-bottom: .5em;
+    }
+
+    &:before {
+      content: attr(data-th)": "; // who knew you could do this? The internet, that's who.
+      font-weight: bold;
+
+      // optional stuff to make it look nicer
+      width: 6.5em; // magic number :( adjust according to your own content
+      display: inline-block;
+      // end options
+      
+      @media (min-width: $breakpoint-alpha) {
+        display: none;
+      }
+    }
+  }
+  
+  th, td {
+    text-align: left;
+    
+    @media (min-width: $breakpoint-alpha) {
+      display: table-cell;
+      padding: .25em .5em;
+      
+      &:first-child {
+        padding-left: 0;
+      }
+      
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+
+  }
+  
+  
+}
+
+
+// presentational styling
+
+@import 'https://fonts.googleapis.com/css?family=Montserrat:300,400,700';
+
+.rwd-table {
+  background: #34495E;
+  color: #fff;
+  border-radius: .4em;
+  overflow: hidden;
+  width: 100%;
+  tr {
+    border-color: lighten(#34495E, 10%);
+  }
+  th, td {
+    margin: .5em 1em;
+    @media (min-width: $breakpoint-alpha) { 
+      padding: 1em !important; 
+    }
+  }
+  th, td:before {
+    color: #dd5;
+  }
+}
+
+.filters .search-ic {
+  margin: 0;
+  margin-left: 0 !important;
+  width: 35% !important;
+}
+
+.filters .select-text {
+    display: inline !important;
+    position: relative;
+    font-size: 14px;
+    font-weight: bolder;
+    color: #f99f01;
+    vertical-align: -webkit-baseline-middle;
+}
+
+.filters .select-icon {
+  margin: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  position: relative !important;
+  display: inline !important;
+  vertical-align: -webkit-baseline-middle;
+}
+
+.filters .clear-btn {
+    margin: 0;
+    width: 28%;
+    float: right;
+    height: 33px;
+}
+
+.search-user .select-text {
+  font-size: 16px;
+}
+
+.filters .search-ic {
+  width: 30% !important;
+}

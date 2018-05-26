@@ -1,0 +1,145 @@
+<ion-header>
+ <ion-navbar color="secondary">
+  <ion-buttons left>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+  </ion-buttons>
+  <ion-buttons start>
+    <button ion-button icon-only (click)="goBack()"><ion-icon name="close"></ion-icon></button>
+  </ion-buttons>
+  <ion-title>
+    SPARK
+  </ion-title>
+ </ion-navbar>
+</ion-header>
+
+<ion-content padding class="home-page">
+ 
+    <div class="booking_card" *ngIf="student != null">
+        <h3>{{student.name}} 
+          <span> 
+            <h5 *ngIf="student.gender === 'Male'"> S/O {{student.parent_name}}</h5>
+            <h5 *ngIf="student.gender !== 'Male'"> D/O {{student.parent_name}}</h5>
+          </span>
+        </h3>
+        <h4><ion-icon name="mail"></ion-icon> {{student.email_id}}</h4>
+        <h4><ion-icon name="call"></ion-icon> {{student.phone_number}} </h4>
+        <h4><ion-icon name="locate"></ion-icon> {{student.locality}}</h4>
+    </div>
+
+    <ion-list no-lines>
+
+      <form [formGroup]="confirmForm">
+ 
+      <!-- Study Year of the student -->
+        <ion-item>
+            <ion-label floating><ion-icon name="bookmarks"></ion-icon> Study Year*</ion-label>
+            <ion-select formControlName="study_year" interface="popover" (ionChange)="onYearChange()">
+              <ion-option value="2018-19">May 2018 - April 2019</ion-option>
+              <ion-option value="2019-20">May 2019 - April 2020</ion-option>
+            </ion-select>
+        </ion-item>
+
+        <p class="errorMessage" *ngIf="!confirmForm.controls.study_year.valid  && (confirmForm.controls.study_year.dirty || submitAttempt)">
+          Please select Class Group
+        </p>
+
+        <!-- Class of the student -->
+        <ion-item>
+            <ion-label floating><ion-icon name="office"></ion-icon> Class*</ion-label>
+            <ion-select formControlName="class_group" interface="popover">
+              <ion-option value="Play Group">Play Group</ion-option>
+              <ion-option value="Nursery">Nursery</ion-option>
+              <ion-option value="LKG">LKG</ion-option>
+              <ion-option value="UKG">UKG</ion-option>
+            </ion-select>
+        </ion-item>
+
+        <p class="errorMessage" *ngIf="!confirmForm.controls.class_group.valid  && (confirmForm.controls.class_group.dirty || submitAttempt)">
+          Please select Class Group
+        </p>
+
+        <!-- class_type of the student -->
+        <ion-item>
+            <ion-label floating><ion-icon name="office"></ion-icon> Type*</ion-label>
+            <ion-select formControlName="class_type" interface="popover">
+              <ion-option value="Annual">Annual</ion-option>
+              <ion-option value="Mid-term">Mid-term</ion-option>
+              <ion-option value="Early start">Early start</ion-option>
+            </ion-select>
+        </ion-item>
+
+        <p class="errorMessage" *ngIf="!confirmForm.controls.class_type.valid  && (confirmForm.controls.class_type.dirty || submitAttempt)">
+          Please select Class Group
+        </p>
+
+        <ion-item>
+          <ion-label>Uniform</ion-label>
+          <ion-toggle formControlName="needUniform" (ionChange)="onUniformChange()" checked="true" class="toggle-large"></ion-toggle>
+        </ion-item>
+
+        <!-- uniform_size of the student -->
+        <ion-item *ngIf="confirmForm.value.needUniform">
+            <ion-label floating><ion-icon name="clothes"></ion-icon> Uniform Size*</ion-label>
+            <ion-select formControlName="uniform_size" interface="popover">
+              <ion-option value="18">18</ion-option>
+              <ion-option value="20">20</ion-option>
+              <ion-option value="22">22</ion-option>
+              <ion-option value="24">24</ion-option>
+              <ion-option value="26">26</ion-option>
+              <ion-option value="28">28</ion-option>
+              <ion-option value="30">30</ion-option>
+              <ion-option value="32">32</ion-option>
+            </ion-select>
+        </ion-item>
+
+        <p class="errorMessage" *ngIf="!confirmForm.controls.uniform_size.valid  && (confirmForm.controls.uniform_size.dirty || submitAttempt)">
+          Please select Uniform Size
+        </p>
+
+        <ion-item>
+          <ion-label>Shoe</ion-label>
+          <ion-toggle formControlName="needShoe" checked="true" (ionChange)="onShoeChange()" class="toggle-large"></ion-toggle>
+        </ion-item>
+
+        <!-- shoe_size of the student -->
+        <ion-item *ngIf="confirmForm.value.needShoe">
+            <ion-label floating><ion-icon name="shoe"></ion-icon> Shoe Size*</ion-label>
+            <ion-select formControlName="shoe_size" interface="popover">
+              <ion-option value="6">6</ion-option>
+              <ion-option value="7">7</ion-option>
+              <ion-option value="8">8</ion-option>
+              <ion-option value="9">9</ion-option>
+              <ion-option value="10">10</ion-option>
+              <ion-option value="11">11</ion-option>
+              <ion-option value="12">12</ion-option>
+              <ion-option value="13">13</ion-option>
+            </ion-select>
+        </ion-item>
+
+        <p class="errorMessage" *ngIf="!confirmForm.controls.shoe_size.valid  && (confirmForm.controls.shoe_size.dirty || submitAttempt)">
+          Please select Shoe Size
+        </p>
+
+        <ion-toolbar color="primary" class="upload_button">
+          <ion-buttons>
+            <button ion-button icon-left (click)="getPicture()">
+              <ion-icon name="camera"></ion-icon>Select Image
+            </button>
+            <input type="file" #fileInput name="files[]" style="visibility: hidden; height: 0px"  (change)="processWebImage($event)" />
+          </ion-buttons>
+        </ion-toolbar>
+
+      </form>
+ 
+    </ion-list>
+
+    <p *ngIf="submitAttempt" style="color: #ea6153;">Please fill out all details accurately.</p>
+ 
+    <div class="gm_drawer_footer_wrapper">
+      <button (click)="goBack()" ion-button class="btn-danger">Cancel</button>
+      <button (click)="confirmStudent()" ion-button class="btn-success">Submit</button>
+    </div>
+
+</ion-content>

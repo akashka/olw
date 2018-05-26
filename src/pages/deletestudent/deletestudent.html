@@ -1,0 +1,70 @@
+<ion-header>
+ <ion-navbar color="secondary">
+  <ion-buttons left>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+  </ion-buttons>
+  <ion-title>
+    DELETED STUDENTS (ADMIN)
+  </ion-title>
+  <!-- <ion-buttons end>
+    <button ion-button icon-only (click)="add()"><ion-icon name="add-circle"></ion-icon></button>
+  </ion-buttons> -->
+ </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+
+    <div class="search-row search-full">
+        <ion-searchbar
+            [(ngModel)]="myInput"
+            (animated)="true"
+            (placeholder)="Search"
+            (ionInput)="search()"
+        ></ion-searchbar>
+    </div>
+ 
+    <img src="assets/images/emoji-faces.jpg" class="emozi" *ngIf="students && !students.length" />
+    <h1 *ngIf="students && !students.length" class="no_record"> NO RECORDS FOUND </h1>
+
+    <ion-item-sliding *ngFor="let student of students" class="results_list_mobile">
+     
+        <button ion-item>
+          <div class="col_left">
+            <div *ngIf="student.photo"><img src={{student.photo}} class="bg_student"/></div>
+            <div *ngIf="!student.photo"><img src="assets/images/NoImageAvailable.png" class="bg_student"/></div>
+          </div>
+          <div class="col_right">
+            <h1>{{student.name}}</h1>
+            <h3 *ngIf="student.gender === 'Male'"> S/O {{student.parent_name}}</h3>
+            <h3 *ngIf="student.gender !== 'Male'"> D/O {{student.parent_name}}</h3>
+            <h2><ion-icon name="mail"></ion-icon> {{student.email_id}}</h2>
+            <a (click)="callNumber(student.phone_number)"><ion-icon name="call"></ion-icon> {{student.phone_number}} </a>
+            <!-- <h2><ion-icon name="call"></ion-icon> {{student.alternate_contact}}</h2> -->
+            <h2><ion-icon name="locate"></ion-icon> {{student.locality}}</h2>
+            <h2><ion-icon name="clock"></ion-icon> {{student.dob | date: 'dd/MMM/yyyy'}} </h2>
+            <h2>{{student.class_group}} ({{student.study_year}})</h2>
+          </div>
+        </button>
+     
+        <ion-item-options side="right">
+          <button ion-button color="danger" (click)="delete(student)">
+            <ion-icon name="trash"></ion-icon>
+            Restore
+          </button>
+        </ion-item-options>
+
+        <ion-item-options side="left">
+          <button ion-button color="secondary" (click)="callNumber(student.phone_number)">
+            <ion-icon name="call"></ion-icon>
+            Contact
+          </button>
+        </ion-item-options>
+
+    </ion-item-sliding>
+
+  </ion-list>
+</ion-content>

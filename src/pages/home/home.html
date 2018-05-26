@@ -1,0 +1,152 @@
+<ion-header>
+  <ion-navbar color="secondary">
+    <ion-buttons left>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>
+      ENQUIRY
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="search()"><ion-icon name="search"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="home-page">
+ 
+    <ion-list no-lines>
+
+      <form [formGroup]="studentForm">
+
+        <!-- Year of Joining of the student -->
+        <ion-list radio-group formControlName="study_year" (ionChange)="onYearChange()">
+          <ion-item style="width: 50%; float: left; background: #f4f4f4;font-weight: bolder;color: #e62626;">
+            <ion-label>May 2018 - April 2019</ion-label>
+            <ion-radio value="2018-19"></ion-radio>
+          </ion-item>
+          <ion-item style="width: 50%; float: left; background: #f4f4f4;font-weight: bolder;color: #e62626;">
+            <ion-label>May 2019 - April 2020</ion-label>
+            <ion-radio value="2019-20"></ion-radio>
+          </ion-item>
+        </ion-list>
+ 
+        <!-- Name of the student -->
+        <ion-item>
+            <ion-label floating><ion-icon name="people"></ion-icon> Name*</ion-label>
+            <ion-input type="text" formControlName="name"></ion-input>
+        </ion-item>
+
+        <p class="errorMessage" *ngIf="!studentForm.controls.name.valid  && (studentForm.controls.name.dirty || submitAttempt)">
+          Please enter a valid name
+        </p>
+
+        <!-- Gender of the student -->
+        <ion-list radio-group formControlName="gender">
+          <ion-list-header> <ion-icon name="transgender"></ion-icon> Gender* </ion-list-header>
+          <ion-item>
+            <ion-label>Male</ion-label>
+            <ion-radio value="Male"></ion-radio>
+          </ion-item>
+          <ion-item>
+            <ion-label>Female</ion-label>
+            <ion-radio value="Female"></ion-radio>
+          </ion-item>
+        </ion-list>
+
+        <p class="errorMessage" *ngIf="!studentForm.controls.gender.valid  && (studentForm.controls.gender.dirty || submitAttempt)">
+          Please select Gender
+        </p>
+
+        <!-- DOB of the student -->
+        <ion-item>
+          <ion-label floating><ion-icon name="clock"></ion-icon> DOB*</ion-label>
+          <ion-datetime displayFormat="DD/MMM/YYYY" (ionChange)="onDobChange()" pickerFormat="DD MMM YYYY" formControlName="dob"></ion-datetime>
+        </ion-item>
+
+        <p class="errorMessage" *ngIf="!studentForm.controls.dob.valid  && (studentForm.controls.dob.dirty || submitAttempt)">
+          Please select valid date
+        </p>
+
+        <ion-item>
+            <h2>Age as of Today - 
+            <span class="numbering">{{ today_age_years }} . {{ today_age_months }}</span></h2>
+        </ion-item>
+
+        <ion-item>
+            <h2>Age as of {{ month_date }} - <span class="numbering">{{ month_age_years }} . {{ month_age_months }}</span> </h2>
+        </ion-item>
+
+        <ion-item>
+            <h2>Class - 
+            <span class="numbering">{{ class_group }}</span></h2>
+        </ion-item>
+
+        <!-- Name of the Parent -->
+        <ion-item>
+            <ion-label floating><ion-icon name="people"></ion-icon> Parent Name*</ion-label>
+            <ion-input type="text" formControlName="parent_name"></ion-input>
+        </ion-item>
+
+        <p class="errorMessage" *ngIf="!studentForm.controls.parent_name.valid  && (studentForm.controls.parent_name.dirty || submitAttempt)">
+          Please enter a valid name
+        </p>
+ 
+        <ion-item>
+            <ion-label floating><ion-icon name="mail"></ion-icon> E-mail*</ion-label>
+            <ion-input type="text" (ionChange)="onEmailChange()" formControlName="email_id"></ion-input>
+        </ion-item>
+
+        <p class="errorMessage" *ngIf="!studentForm.controls.email_id.valid  && (studentForm.controls.email_id.dirty || submitAttempt)">
+          Please enter a valid E-mail Id
+        </p>
+ 
+        <ion-item>
+            <ion-label floating><ion-icon name="call"></ion-icon> Phone No*</ion-label>
+            <ion-input type="text" (ionChange)="onPhoneChange()"formControlName="phone_number"></ion-input>
+        </ion-item>
+
+        <p class="errorMessage" *ngIf="!studentForm.controls.phone_number.valid  && (studentForm.controls.phone_number.dirty || submitAttempt)">
+          Please enter a valid Phone No.
+        </p>
+
+        <ion-item>
+            <ion-label floating><ion-icon name="call"></ion-icon> Alternate Contact</ion-label>
+            <ion-input type="text" (ionChange)="onPhoneChange()" formControlName="alternate_contact"></ion-input>
+        </ion-item>
+
+        <p class="errorMessage" *ngIf="!studentForm.controls.alternate_contact.valid  && (studentForm.controls.alternate_contact.dirty || submitAttempt)">
+          Please enter a valid alternate No.
+        </p>
+
+        <ion-item>
+            <ion-label floating><ion-icon name="locate"></ion-icon> Locality*</ion-label>
+            <ion-input type="text" formControlName="locality"></ion-input>
+        </ion-item>
+
+        <p class="errorMessage" *ngIf="!studentForm.controls.locality.valid  && (studentForm.controls.locality.dirty || submitAttempt)">
+          Please enter a valid locality
+        </p>
+
+        <ion-toolbar color="primary" class="upload_button">
+          <ion-buttons>
+            <button ion-button icon-left (click)="getPicture()">
+              <ion-icon name="camera"></ion-icon>Select Image
+            </button>
+            <input type="file" #fileInput name="files[]" style="visibility: hidden; height: 0px"  (change)="processWebImage($event)" />
+          </ion-buttons>
+        </ion-toolbar>
+
+      </form>
+ 
+    </ion-list>
+
+    <p *ngIf="submitAttempt" style="color: #ea6153;">Please fill out all details accurately.</p>
+ 
+    <div class="gm_drawer_footer_wrapper">
+      <button (click)="resetStudent()" ion-button class="btn-danger">Reset</button>
+      <button (click)="addStudent()" ion-button class="btn-success">Submit</button>
+    </div>
+
+</ion-content>
